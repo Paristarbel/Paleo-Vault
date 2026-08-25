@@ -7,26 +7,33 @@ This is an educational  data engineering project that explores how scientific an
 The project combines my interest in programming, data engineering, and paleoanthropology into one manageable project.
 
 ## Project Architecture
-
-        Raw Research Data
-               │
-               ▼
-        Data Ingestion
-               │
-               ▼
-             Pandas
-               │
-               ▼
-    Cleaning & Validation
-               │
-               ▼
-       Transformation
-               │
-               ▼
-          PostgreSQL
-               │
-               ▼
-         SQL Analysis
+                 GBIF / Museum Data
+                         │
+                         ↓
+                  EXTRACT
+                Python + API
+                         │
+                         ↓
+                 TRANSFORM
+          Pandas + validation
+                         │
+                         ↓
+                    LOAD
+                         │
+              ┌──────────┴──────────┐
+              ↓                     ↓
+        PostgreSQL/SQL          Parquet
+              │
+              ↓
+       ┌───────────────┐
+       │               │
+       ↓               ↓
+  SQL Analysis      MAP
+       │               │
+       ↓               ↓
+Species trends   Fossil locations
+Site counts      Hominin locations
+Time periods     Museum records
 
 ## 📊 Data
 This project may work with structured and semi-structured datasets containing information such as:
