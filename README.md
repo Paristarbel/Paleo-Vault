@@ -7,7 +7,8 @@ This is an educational  data engineering project that explores how scientific an
 The project combines my interest in programming, data engineering, and paleoanthropology into one manageable project.
 
 ## Project Architecture
-                 GBIF / Museum Data
+
+      GBIF / Museum Data
                          │
                          ↓
                   EXTRACT
@@ -34,6 +35,7 @@ The project combines my interest in programming, data engineering, and paleoanth
 Species trends   Fossil locations
 Site counts      Hominin locations
 Time periods     Museum records
+
 
 ## 📊 Data
 This project may work with structured and semi-structured datasets containing information such as:
@@ -133,49 +135,32 @@ Invalid records will be identified and handled deliberately rather than silently
 
 ## 📁 Project Structure
 
-PaleoVault/
-
+PaleoDataZA/
 │
-
 ├── data/
-
 │   ├── raw/
-
-│   └── processed/
-
-│
-├── notebooks/
-
+│   ├── processed/
+│   └── parquet/
 │
 ├── src/
-
-│   ├── ingestion/
-
-│   ├── transformation/
-
-│   ├── validation/
-
-│   └── loading/
-
+│   ├── extract/
+│   ├── transform/
+│   ├── load/
+│   └── analysis/
 │
-
-├── sql/
-
-│   ├── schema.sql
-
-│   └── queries.sql
-
+├── database/
 │
-
+├── maps/
+│   └── fossil_locations.html
+│
+├── notebooks/
+│
 ├── tests/
-
 │
-
-├── .gitignore
-
 ├── requirements.txt
-
-└── README.md
+├── .gitignore
+├── README.md
+└── docker-compose.yml
 
 
 ## 🚀 Learning Goals
