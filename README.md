@@ -1,6 +1,6 @@
 # 🦴 Paleo_Vault
 
-## A Mini Data Engineering Pipeline for Paleoanthropological Research Data
+## A Mini South African Fossil & Hominid Data Pipeline for Paleoanthropological Research Data
 
 This is an educational  data engineering project that explores how scientific and paleoanthropological data can be ingested, cleaned, validated ,transformed, stored, and queried.
 
