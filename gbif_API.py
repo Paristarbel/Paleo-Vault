@@ -1,10 +1,6 @@
 import requests
 import json
 
-# print(response.url)
-# print(response.status_code)
-# print(len(records))
-
 all_records=[]
 clean_records=[]
 isrequesting_pages=True
@@ -15,7 +11,6 @@ params={"country":"ZA",
         "limit":20 ,
         "offset":0
         }
-
 
 params["offset"]=0
 params["limit"]=300
