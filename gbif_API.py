@@ -14,33 +14,39 @@ params={"country":"ZA",
 
 params["offset"]=0
 params["limit"]=300
-response=requests.get(url,params=params)
-data=response.json()
-record=data["results"]
+
+
+
+
 while isrequesting_pages:
 
-    record=data["results"][0]
-    cleaning_record={"scientificName":record.get("scientificName"),
-        "country":record.get("country"),
-        "year":record.get("year"),
-        "basisOfRecord":record.get("basisOfRecord"),
-        "decimalLatitude":record.get("decimalLatitude"),
-        "decimalLongitude":record.get("decimalLongitude"),
-        "institutionCode":record.get("institutionCode"),
-        "collectionCode":record.get("collectionCode"),
-        "datasetName":record.get("datasetName"),
-        "occurrenceID":record.get("occurrenceID")}
-    clean_records.append(cleaning_record)
     response=requests.get(url,params=params)
     data=response.json()
     all_records.extend(data["results"])
+    records=data["results"]
+
+    for record in data["results"]:
+
+        cleaning_record={"scientificName":record.get("scientificName"),
+            "country":record.get("country"),
+            "year":record.get("year"),
+            "basisOfRecord":record.get("basisOfRecord"),
+            "decimalLatitude":record.get("decimalLatitude"),
+            "decimalLongitude":record.get("decimalLongitude"),
+            "institutionCode":record.get("institutionCode"),
+            "collectionCode":record.get("collectionCode"),
+            "datasetName":record.get("datasetName"),
+            "occurrenceID":record.get("occurrenceID")}
+        clean_records.append(cleaning_record)
+    
+    
 
     if data["endOfRecords"]==True:
-        isrequesting_pages=data["endOfRecords"]
+        isrequesting_pages=False
         print("All the records have been accessed...")
     else:
        params["offset"] += params["limit"]
-    print(len(clean_records))
+    print(record.get("country"))
     
 
    
