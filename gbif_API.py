@@ -47,7 +47,9 @@ while isrequesting_pages:
     else:
        params["offset"] += params["limit"]
 
-       
+
+
+
     print(record.get("country"))
     
 
