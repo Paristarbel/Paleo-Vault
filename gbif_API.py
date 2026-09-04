@@ -14,10 +14,7 @@ params={"country":"ZA",
 
 params["offset"]=0
 params["limit"]=300
-
-
-
-
+count=0
 while isrequesting_pages:
 
     response=requests.get(url,params=params)
@@ -36,21 +33,33 @@ while isrequesting_pages:
             "institutionCode":record.get("institutionCode"),
             "collectionCode":record.get("collectionCode"),
             "datasetName":record.get("datasetName"),
-            "occurrenceID":record.get("occurrenceID")}
+            "occurrenceID":record.get("occurrenceID"),
+            "media": record.get("media")}
         clean_records.append(cleaning_record)
     
-    
-
     if data["endOfRecords"]==True:
         isrequesting_pages=False
         print("All the records have been accessed...")
     else:
        params["offset"] += params["limit"]
 
+    missing_scienfic_name=sum(1 for infor in clean_records if not infor["scientificName"])
+    missing_latitude=sum(1 for infor in clean_records if infor["decimalLatitude"] is None)
+    missing_longitude=sum(1 for infor in clean_records if infor["decimalLongitude"] is None)
+    missing_year=sum(1 for infor in clean_records if infor["year"] is None)
+    missing_occurence_id=sum(1 for infor in clean_records if not infor["occurrenceID"])
+    media=sum(1 for infor in clean_records if  infor["media"] != [])
+    missing_media=sum(1 for infor in clean_records if not infor["media"])
+    print("Total records:", len(clean_records))
+    print(f"Missing scienfic name: {missing_scienfic_name} ")
+    print(f"Missing latitude: {missing_latitude} ")
+    print(f"Missing longitude: {missing_longitude} ")
+    print(f"Missing year: {missing_year} ")
+    print(f"Missing Occurence-id: {missing_occurence_id} ")
 
-
-
-    print(record.get("country"))
-    
-
-   
+# print(f"Media: {media} ")
+for infor in clean_records:
+    if  (infor["scientificName"]) != None and (infor["scientificName"]).startswith("Australopithecus") :
+        count+=1
+print(count)
+    # print(f"missing_media: {missing_media} ")
