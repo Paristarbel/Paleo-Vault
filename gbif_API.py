@@ -61,5 +61,17 @@ while isrequesting_pages:
 for infor in clean_records:
     if  (infor["scientificName"]) != None and (infor["scientificName"]).startswith("Australopithecus") :
         count+=1
+    print(count)
+    # print(f"missing_media: {missing_media} ") print("Total records:", len(clean_records))
+    print(f"Missing scienfic name: {missing_scienfic_name} ")
+    print(f"Missing latitude: {missing_latitude} ")
+    print(f"Missing longitude: {missing_longitude} ")
+    print(f"Missing year: {missing_year} ")
+    print(f"Missing Occurence-id: {missing_occurence_id} ")
+
+# print(f"Media: {media} ")
+for infor in clean_records:
+    if  (infor["scientificName"]) != None and (infor["scientificName"]).startswith("Australopithecus") :
+        count+=1
 print(count)
     # print(f"missing_media: {missing_media} ")
