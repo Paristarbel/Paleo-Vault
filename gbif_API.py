@@ -12,14 +12,15 @@ params={"country":"ZA",
         "limit":20 ,
         "offset":0
         }
-
 params["offset"]=0
 params["limit"]=300
+
 count=0
 while isrequesting_pages:
+    
 
     try:
-        response = requests.get(url,params = params)
+        response = requests.get(url, params=params, timeout=30)
 
         if response.status_code != 200:
             print("Request failed:", response.status_code)
@@ -54,6 +55,20 @@ while isrequesting_pages:
     else:
        params["offset"] += params["limit"]
 
+
+
+missing_scientific_names=[record for record in clean_records if not record["scientificName"]]
+print("Records missing scientific name : ", len(missing_scientific_names))
+
+for record in missing_scientific_names[:10]:
+    print(record)
+
+missing_occurence_ids =[record for record in clean_records if not record["occurrenceID"]]
+print("Records missing occurence ids : ", len(missing_occurence_ids))
+
+for record in missing_occurence_ids[:10]:
+    print(record)
+
     # missing_scienfic_name=sum(1 for infor in clean_records if not infor["scientificName"])
     # missing_latitude=sum(1 for infor in clean_records if infor["decimalLatitude"] is None)
     # missing_longitude=sum(1 for infor in clean_records if infor["decimalLongitude"] is None)
@@ -70,18 +85,7 @@ while isrequesting_pages:
     # # print(f"Records with media:  {media}")
     # # print(f"Records without media:  {missing_media}")
 
-    # missing_scientific_names=[record for record in clean_records if not record["scientificName"]]
-    # print("Records missing scientific name : ", len(missing_scientific_names))
-
-    # for record in missing_scientific_names[:10]:
-    #     print(record)
-
-    # missing_occurence_ids =[record for record in clean_records if not record["occurrenceID"]]
-    # print("Records missing occurence ids : ", len(missing_occurence_ids))
-
-    # for record in missing_occurence_ids[:10]:
-    #     print(record)
-
+   
    
 
     
