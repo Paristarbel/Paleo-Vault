@@ -17,9 +17,8 @@ params["limit"]=300
 
 count=0
 while isrequesting_pages:
-    
-
     try:
+        print("Requesting offset:", params["offset"], flush=True)
         response = requests.get(url, params=params, timeout=30)
 
         if response.status_code != 200:
@@ -46,9 +45,9 @@ while isrequesting_pages:
             "collectionCode":record.get("collectionCode"),
             "datasetName":record.get("datasetName"),
             "occurrenceID":record.get("occurrenceID"),
-            "media": record.get("media")}
+            "media": record.get("media") or []}
         clean_records.append(cleaning_record)
-    
+
     if data["endOfRecords"]==True:
         isrequesting_pages=False
         print("All the records have been accessed...")
@@ -56,36 +55,26 @@ while isrequesting_pages:
        params["offset"] += params["limit"]
 
 
-
 missing_scientific_names=[record for record in clean_records if not record["scientificName"]]
 print("Records missing scientific name : ", len(missing_scientific_names))
-
-for record in missing_scientific_names[:10]:
-    print(record)
 
 missing_occurence_ids =[record for record in clean_records if not record["occurrenceID"]]
 print("Records missing occurence ids : ", len(missing_occurence_ids))
 
-for record in missing_occurence_ids[:10]:
-    print(record)
+missing_media = [record for record in clean_records if record["media"] == []]
+print("Records with empty media list: ", len(missing_media))
 
-    # missing_scienfic_name=sum(1 for infor in clean_records if not infor["scientificName"])
-    # missing_latitude=sum(1 for infor in clean_records if infor["decimalLatitude"] is None)
-    # missing_longitude=sum(1 for infor in clean_records if infor["decimalLongitude"] is None)
-    # missing_year=sum(1 for infor in clean_records if infor["year"] is None)
-    # missing_occurence_id=sum(1 for infor in clean_records if not infor["occurrenceID"])
-    # media=sum(1 for infor in clean_records if  infor["media"] != [])
-    # missing_media=sum(1 for infor in clean_records if not infor["media"])
-    # # print("Total records:", len(clean_records))
-    # # print(f"Missing scienfic name: {missing_scienfic_name} ")
-    # # print(f"Missing latitude: {missing_latitude} ")
-    # # print(f"Missing longitude: {missing_longitude} ")
-    # # print(f"Missing year: {missing_year} ")
-    # # print(f"Missing Occurence-id: {missing_occurence_id} ")
-    # # print(f"Records with media:  {media}")
-    # # print(f"Records without media:  {missing_media}")
+print("Total clean_records:", len(clean_records))
 
-   
+
+invalidCoordinate_latitude=[record for record in clean_records if (record["decimalLatitude"] is not None ) and (record["decimalLatitude"] < -35 or record["decimalLatitude"] >-22)]
+invalidCoordinate_longitude=[record for record in clean_records if  (record["decimalLongitude"] is not None ) and (record["decimalLongitude"] < 16 or record["decimalLongitude"] > 33)]
+
+print("Records with invalid latitude: ", len(invalidCoordinate_latitude))
+print("Records with invalid longitude: ", len(invalidCoordinate_longitude))
+
+invalid_ids = set(r["occurrenceID"] for r in invalidCoordinate_latitude) & set(r["occurrenceID"] for r in invalidCoordinate_longitude)
+print("Records with BOTH invalid latitude and longitude:", len(invalid_ids))
    
 
 
