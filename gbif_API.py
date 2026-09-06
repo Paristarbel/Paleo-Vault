@@ -1,7 +1,6 @@
 import requests
-
 import json
-
+import csv
 import time
 
 all_records=[]
@@ -198,3 +197,10 @@ print("Unique country values:", unique_countries)
 
 unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
 print("Unique institution codes:", unique_institutions)
+
+with open("clean_fossil_records.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=expected_keys)
+    writer.writeheader()
+    writer.writerows(clean_records)
+
+print("Saved clean_records to clean_fossil_records.csv")
