@@ -162,3 +162,16 @@ if len(Occurrence_hasID_list) != len(Occurrence_isNotNone):
 else:
 
     print("There are no duplicates")
+
+unique_names = set(record["scientificName"] for record in clean_records if record["scientificName"] is not None)
+print(f"Unique scientific names: {len(unique_names)}")
+
+sample_names = sorted(unique_names)[:30]
+for name in sample_names:
+    print(repr(name))
+
+unique_countries = set(record["country"] for record in clean_records if record["country"] is not None)
+print("Unique country values:", unique_countries)
+
+unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
+print("Unique institution codes:", unique_institutions)
