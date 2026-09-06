@@ -175,3 +175,26 @@ print("Unique country values:", unique_countries)
 
 unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
 print("Unique institution codes:", unique_institutions)
+
+assert len(clean_records) == 15070, "Total record count changed unexpectedly!"
+assert len(missing_occurence_ids) + len(Occurrence_hasID_list) == len(clean_records), \
+    "Missing + present occurrenceID counts don't add up to total!"
+
+valid_coords = [r for r in clean_records if r["coordinatesValid"]]
+assert len(valid_coords) + len(invalid_flagged) == len(clean_records),\
+"Valid + invalid coordinate counts dont add up to total!"
+
+expected_keys = {"scientificName", "country", "year", "basisOfRecord",
+                  "decimalLatitude", "decimalLongitude", "institutionCode",
+                  "collectionCode", "datasetName", "occurrenceID", "media",
+                  "coordinatesValid", "coordinatesInvalid"}
+
+for record in clean_records:
+    assert set(record.keys()) == expected_keys, "A record is missing expected fields!"
+
+print("All validation checks passed. Dataset is consistent.")
+unique_countries = set(record["country"] for record in clean_records if record["country"] is not None)
+print("Unique country values:", unique_countries)
+
+unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
+print("Unique institution codes:", unique_institutions)
