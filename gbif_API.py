@@ -1,7 +1,10 @@
 import requests
+
 import json
-import csv
+
 import time
+
+import csv
 
 all_records=[]
 
@@ -12,9 +15,13 @@ isrequesting_pages=True
 url="https://api.gbif.org/v1/occurrence/search"
 
 params={"country":"ZA",
+
         "basisOfRecord":"FOSSIL_SPECIMEN",
+
         "limit":20 ,
+
         "offset":0
+
         }
 
 params["offset"]=0
@@ -64,17 +71,29 @@ while isrequesting_pages:
         coordinatesValid = not coordinatesInvalid
 
         cleaning_record={"scientificName":record.get("scientificName"),
+
             "country":record.get("country"),
+
             "year":record.get("year"),
+
             "basisOfRecord":record.get("basisOfRecord"),
+
             "decimalLatitude":record.get("decimalLatitude"),
+
             "decimalLongitude":record.get("decimalLongitude"),
+
             "institutionCode":record.get("institutionCode"),
+
             "collectionCode":record.get("collectionCode"),
+
             "datasetName":record.get("datasetName"),
+
             "occurrenceID":record.get("occurrenceID"),
+
             "media": record.get("media") or [],
+
             "coordinatesValid": coordinatesValid,
+
             "coordinatesInvalid":coordinatesInvalid}
 
         clean_records.append(cleaning_record)
@@ -114,13 +133,21 @@ print("Records with invalid latitude: ", len(invalidCoordinate_latitude))
 print("Records with invalid longitude: ", len(invalidCoordinate_longitude))
 
 invalid_ids = set(
+
     r["occurrenceID"]
+
     for r in invalidCoordinate_latitude
+
     if r["occurrenceID"] is not None
+
 ) & set(
+
     r["occurrenceID"]
+
     for r in invalidCoordinate_longitude
+
     if r["occurrenceID"] is not None
+
 )
 
 print("Records with BOTH invalid latitude and longitude:", len(invalid_ids))
@@ -131,25 +158,37 @@ print("Records flagged coordinatesInvalid:", len(invalid_flagged))
 
 
 Occurrence_isNone=set(
+
     record["occurrenceID"]
+
     for record in clean_records
+
     if record["occurrenceID"] is None
+
 )
 
 print(f"Occurrence IDs missing: {len(Occurrence_isNone)}")
 
 Occurrence_isNotNone=set(
+
     record["occurrenceID"]
+
     for record in clean_records
+
     if record["occurrenceID"] is not None
+
 )
 
 print(f"Occurrence IDs present: {len(Occurrence_isNotNone)}")
 
 Occurrence_hasID_list = [
+
     record["occurrenceID"]
+
     for record in clean_records
+
     if record["occurrenceID"] is not None
+
 ]
 
 if len(Occurrence_hasID_list) != len(Occurrence_isNotNone):
@@ -163,44 +202,53 @@ else:
     print("There are no duplicates")
 
 unique_names = set(record["scientificName"] for record in clean_records if record["scientificName"] is not None)
+
 print(f"Unique scientific names: {len(unique_names)}")
 
 sample_names = sorted(unique_names)[:30]
+
 for name in sample_names:
+
     print(repr(name))
 
 unique_countries = set(record["country"] for record in clean_records if record["country"] is not None)
+
 print("Unique country values:", unique_countries)
 
 unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
+
 print("Unique institution codes:", unique_institutions)
 
 assert len(clean_records) == 15070, "Total record count changed unexpectedly!"
+
 assert len(missing_occurence_ids) + len(Occurrence_hasID_list) == len(clean_records), \
     "Missing + present occurrenceID counts don't add up to total!"
 
 valid_coords = [r for r in clean_records if r["coordinatesValid"]]
-assert len(valid_coords) + len(invalid_flagged) == len(clean_records),\
-"Valid + invalid coordinate counts dont add up to total!"
+
+assert len(valid_coords) + len(invalid_flagged) == len(clean_records), \
+    "Valid + invalid coordinate counts dont add up to total!"
 
 expected_keys = {"scientificName", "country", "year", "basisOfRecord",
+
                   "decimalLatitude", "decimalLongitude", "institutionCode",
+
                   "collectionCode", "datasetName", "occurrenceID", "media",
+
                   "coordinatesValid", "coordinatesInvalid"}
 
 for record in clean_records:
+
     assert set(record.keys()) == expected_keys, "A record is missing expected fields!"
 
 print("All validation checks passed. Dataset is consistent.")
-unique_countries = set(record["country"] for record in clean_records if record["country"] is not None)
-print("Unique country values:", unique_countries)
-
-unique_institutions = set(record["institutionCode"] for record in clean_records if record["institutionCode"] is not None)
-print("Unique institution codes:", unique_institutions)
 
 with open("clean_fossil_records.csv", "w", newline="", encoding="utf-8") as f:
+
     writer = csv.DictWriter(f, fieldnames=expected_keys)
+
     writer.writeheader()
+
     writer.writerows(clean_records)
 
 print("Saved clean_records to clean_fossil_records.csv")
