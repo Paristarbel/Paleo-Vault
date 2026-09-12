@@ -40,11 +40,8 @@ This project exists to demonstrate a complete, real-world data engineering workf
 
 ---
 
-## 📸 Preview
 
-> *Add screenshots here — a full-dashboard view and a Species Explorer view work well.*
-
-
+![alt text](<Screenshot 2026-09-12 122335.png>)
 ---
 
 ## 🎯 What This Project Demonstrates
