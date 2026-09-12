@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: paleovault_db
+    restart: always
+    environment:
+      POSTGRES_DB: paleovault
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: paris
+    ports:
+      - "5432:5432"
+    volumes:
+      - paleovault_data:/var/lib/postgresql/data
+
+volumes:
+  paleovault_data:

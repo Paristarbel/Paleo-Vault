@@ -15,13 +15,34 @@ conn = psycopg2.connect(
 )
 print("Connect successfully!")
 
+cursor = conn.cursor()
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS records (
+        id SERIAL PRIMARY KEY,
+        occurrenceID TEXT,
+        scientificName TEXT,
+        country TEXT,
+        year INTEGER,
+        basisOfRecord TEXT,
+        decimalLatitude REAL,
+        decimalLongitude REAL,
+        institutionCode TEXT,
+        collectionCode TEXT,
+        datasetName TEXT,
+        media JSONB,
+        coordinatesValid BOOLEAN,
+        coordinatesInvalid BOOLEAN
+    )
+""")
+conn.commit()
+print("Table ready.")
+
 df = pd.read_csv("clean_fossil_records.csv")
 df['year'] = df['year'].astype('Int64')
 
 print(df.shape)
 print(df.columns)
-
-cursor = conn.cursor()
 
 insert_query = """
     INSERT INTO records (

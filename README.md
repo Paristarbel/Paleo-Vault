@@ -1,207 +1,268 @@
-# 🦴 Paleo_Vault
+# 🦴 PaleoVault
 
-## A Mini  Fossil & Hominid Data Pipeline for Paleoanthropological Research Data in South Africa 🇿🇦
+### An end-to-end data engineering pipeline exploring South African fossil occurrence data
 
-This is an educational  data engineering project that explores how scientific and paleoanthropological data can be ingested, cleaned, validated ,transformed, stored, and queried.
+[![Python](https://img.shields.io/badge/Python-3.12-blue)]()
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)]()
+[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)]()
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)]()
+[![Tests](https://img.shields.io/badge/Tests-12%20passing-brightgreen)]()
 
-The project combines my interest in programming, data engineering, and paleoanthropology into one manageable project.
+PaleoVault extracts real fossil specimen data from the Global Biodiversity Information Facility (GBIF), cleans and validates it rigorously, loads it into a PostgreSQL database, and presents it through an interactive dashboard — complete with charts, an interactive map, and a Wikipedia-enriched species explorer.
 
-## Project Architecture
+Built as an independent Data Engineering elective project at **WeThinkCode_**, combining a genuine interest in data engineering with paleoanthropology.
 
-      GBIF / Museum Data
-                         │
-                         ↓
-                  EXTRACT
-                Python + API
-                         │
-                         ↓
-                 TRANSFORM
-          Pandas + validation
-                         │
-                         ↓
-                    LOAD
-                         │
-              ┌──────────┴──────────┐
-              ↓                     ↓
-        PostgreSQL/SQL          Parquet
-              │
-              ↓
-       ┌───────────────┐
-       │               │
-       ↓               ↓
-  SQL Analysis      MAP
-       │               │
-       ↓               ↓
-Species trends   Fossil locations
-Site counts      Hominin locations
-Time periods     Museum records
+---
 
+## 📖 What Is PaleoVault?
 
-## 📊 Data
-This project may work with structured and semi-structured datasets containing information such as:
+PaleoVault is a data engineering project that answers a simple question: **what does South Africa's fossil record actually look like, according to the world's largest open biodiversity database?**
 
->Specimen ID,
- >Species,
- >Genus,
- >Discovery site,
- >Country,
- >Latitude,
- >Discovery date,
- >Geological age,
- >Researcher,
- >Institution,
- >Publication
+It takes raw, messy, real-world scientific data — fossil specimen records scattered across 42 different museums and universities worldwide — and turns it into something anyone can explore: a live, searchable dashboard showing where fossils were found, which institutions hold them, how discovery activity has changed over time, and what's actually known about each species.
 
-## 🛠️ Technology Stack
-### Current
+### Purpose
 
->Python,
- >Pandas,
- >PostgreSQL,
- >SQL,
- >Git,
- >GitHub
+This project exists to demonstrate a complete, real-world data engineering workflow — not a toy example, but an actual pipeline handling actual imperfect data: missing values, invalid coordinates, inconsistent formatting, and the reality that no single data source tells the whole story. Every cleaning and validation decision made along the way is deliberate and documented, not just "made to work."
 
-### Planned Exploration
+### Who Can Use This?
 
->CSV, 
- >JSON,
- >Parquet,
- >Docker,
- >REST APIs,
- >Apache Airflow,
- >Apache Kafka,
- >Cloud Storage,
- >Data Quality Testing,
- >Data Warehousing
+- **Paleoanthropologists and researchers** — quickly see which South African institutions hold specimens of a given species, cross-reference discovery years, and identify gaps in geographic or temporal coverage without manually searching GBIF's raw interface
+- **Museum and collection curators** — get a consolidated view of how their institution's holdings compare to others, and spot data quality issues (missing coordinates, unnamed specimens) worth correcting at the source
+- **Students and educators in paleontology or biodiversity science** — explore real specimen data interactively, without needing to write code or query a database directly
+- **Data engineers and developers** — reference implementation for building a full pipeline (API → cleaning → PostgreSQL → analysis → dashboard) around a real, messy, public scientific dataset
 
-## 🔄 ETL Pipeline
+### What You Can Do With It
 
-### Extract 
+- Browse aggregate trends: fossil records by year, by institution, by data quality
+- Explore individual species: search by name, view a Wikipedia-style profile with description, image, and specimen locations
+- Inspect the underlying data quality decisions and reasoning (documented below and throughout the code)
+- Reuse or extend the pipeline for a different country, taxon, or data source entirely — the extraction and cleaning logic is written to be adaptable, not hardcoded to this one use case
 
-Collecting data from available datasets and/or public data sources.
+---
 
-### Transform 
-Use python and pandas to:
- >Inspect the data, 
- >Handle missing values, 
- >Remove duplicates, 
- >Standardize formats, 
- >Validate values, 
- >Transform columns, 
- >Prepare data for storage
+## 📸 Preview
 
-### Load
-Load the processed data into PostgreSQL for structured storage and SQL analysis.
-
-## 🗄️ Database Design
-The project will use a relational database to represent related entities.
-
-This is the planned module and I will refine the schema as  I develop the project:
-
- species
-    │
-    ▼
- specimens ─────── sites
-    │
-    ▼
- researchers
-
-## 🔍 Example Data Questions
-
-### Paleo_Vault will eventually allow questions such as:
-
- >How many specimens are associated with each species?, 
- >Which sites contain the most recorded specimens?, 
- >Which countries have the most discoveries?, 
- >Which researchers are associated with specific discoveries?, 
- >How are discoveries distributed across geological periods?,
- >Which records contain missing or invalid information?,
- >Are there duplicate specimen records?
+> *Add screenshots here — a full-dashboard view and a Species Explorer view work well.*
 
 
-##🧪 Data Quality
-PaleoVault will check for:
+---
 
-Missing values, 
- Duplicate records,
- Invalid dates,
- Invalid coordinates,
- Incorrect data types,
- Inconsistent names,
- Invalid relationships between records
+## 🎯 What This Project Demonstrates
 
-Invalid records will be identified and handled deliberately rather than silently discarded.
+| Skill | Where |
+|---|---|
+| API extraction with retry/error handling | `gbif_API.py` |
+| Data cleaning, validation & data quality flagging | `gbif_API.py` |
+| Relational database design & self-provisioning schema | `load_to_db.py` |
+| SQL analysis & aggregation | `analysis.sql`, `queries.py` |
+| Interactive data visualization | `dashboard.py` |
+| Third-party API integration (Wikipedia) | `queries.py` |
+| Secure configuration management | `.env` + `python-dotenv` |
+| Containerized infrastructure | `docker-compose.yml` |
+| Automated testing | `test_basic.py` |
+
+---
+
+## 🖥️ Dashboard Features
+
+- 📊 **Summary Stats** — total records, unique species, contributing institutions
+- 📈 **Records by Year** — fossil record activity across 74+ years
+- 🏛️ **Records by Institution** — which museums/universities hold the most South African fossil data
+- 🗺️ **Fossil Locations Map** — interactive map of every geographically valid record
+- 🔍 **Species Explorer** — search any species and view a Wikipedia-style profile: live description and image (pulled from Wikipedia's API), GBIF specimen media (when available), occurrence records, and a dedicated location map
+
+---
+
+## 🏗️ Architecture
+GBIF Occurrence API
+│
+▼
+Python Extraction & Cleaning (gbif_API.py)
+│
+▼
+clean_fossil_records.csv
+│
+▼
+PostgreSQL Database (load_to_db.py)
+(local install OR Docker)
+│
+▼
+SQL Analysis (analysis.sql / queries.py)
+│
+▼
+Streamlit Dashboard (dashboard.py)
+│
+├── Plotly → charts
+├── Folium → interactive maps
+└── Wikipedia API → species descriptions & images
+
+
+---
+
+## 🛠️ Tech Stack
+
+**Core:** Python 3.12 · PostgreSQL 16 · Pandas · psycopg2
+
+**Dashboard:** Streamlit · Plotly · Folium · streamlit-folium
+
+**Infrastructure:** Docker & Docker Compose · python-dotenv
+
+**Testing:** pytest
+
+**External APIs:** GBIF Occurrence API · Wikipedia REST API
+
+---
+
+## 📊 The Data
+
+**Source:** [GBIF Occurrence API](https://www.gbif.org/developer/occurrence), filtered for:
+- Country: **South Africa**
+- Basis of Record: **Fossil specimens**
+
+**Dataset size:** 15,070 records · 2,793 unique species/taxa · 42 contributing institutions
+
+### Data Quality — Handled Deliberately, Not Silently
+
+| Finding | Decision |
+|---|---|
+| 1,089 records missing a scientific name | Preserved as-is — not invented or dropped |
+| 106 records missing a GBIF `occurrenceID` | Handled via a database-generated surrogate key (`id SERIAL`) instead of a fragile natural key |
+| 413 records with coordinates outside South Africa's bounding box | Flagged (`coordinatesInvalid`) but retained for non-spatial analysis |
+| Duplicate `occurrenceID`s | **Zero found** among records that have one — verified via list/set comparison |
+
+> ⚠️ **On data completeness:** This dataset reflects only what institutions have contributed to GBIF. It doesn't include every significant South African fossil find — for example, *Homo naledi* specimens (researched via Wits University's Rising Star excavations) don't currently appear in GBIF's occurrence records. This is a genuine limitation of the data source, not a pipeline defect — and it's exactly the kind of nuance real data engineering work has to reckon with.
+
+---
+
+## 🚀 Getting Started
+
+### Option A — Docker (recommended, fastest)
+
+**Prerequisites:** Python 3.12+, Docker Desktop, Git
+
+```bash
+git clone <your-repo-url>
+cd Paleo-Vault
+
+python3 -m venv venv
+source venv/bin/activate          # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+cp .env.example .env              # then fill in your own values
+
+docker compose up -d              # starts PostgreSQL automatically
+
+python3 gbif_API.py               # extract + clean data (~few minutes)
+python3 load_to_db.py             # auto-creates schema + loads data
+
+streamlit run dashboard.py
+```
+
+No manual PostgreSQL install, no manual `CREATE DATABASE` — Docker Compose handles the entire database setup in one command.
+
+### Option B — Manual PostgreSQL install
+
+**Prerequisites:** Python 3.12+, PostgreSQL 16+, Git
+
+```bash
+git clone <your-repo-url>
+cd Paleo-Vault
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+sudo service postgresql start
+sudo -u postgres psql
+```
+Inside `psql`:
+```sql
+CREATE DATABASE paleovault;
+\q
+```
+
+```bash
+cp .env.example .env              # then fill in your own values
+
+python3 gbif_API.py
+python3 load_to_db.py             # auto-creates the table schema
+
+streamlit run dashboard.py
+```
+
+Open the printed local URL (typically `http://localhost:8501`) in your browser.
+
+---
+
+## 🧪 Testing
+
+```bash
+pip install pytest        # if not already installed
+pytest test_basic.py -v
+```
+
+**12 tests, all passing**, covering:
+- Dataset integrity — row counts, expected columns, coordinate bounds, duplicate checks
+- Core SQL query functions in `queries.py` — aggregation, filtering, search
+
+> Requires PostgreSQL running (locally or via Docker) with data already loaded.
+
+**Not yet covered** (see Future Improvements): the Streamlit UI itself, and the data-loading script in isolation.
+
+---
 
 ## 📁 Project Structure
 
-PaleoDataZA/
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── parquet/
-│
-├── src/
-│   ├── extract/
-│   ├── transform/
-│   ├── load/
-│   └── analysis/
-│
-├── database/
-│
-├── maps/
-│   └── fossil_locations.html
-│
-├── notebooks/
-│
-├── tests/
-│
+Paleo-Vault/
+├── gbif_API.py # Extraction, cleaning & validation pipeline
+├── load_to_db.py # Loads cleaned data into PostgreSQL (self-provisioning schema)
+├── queries.py # Reusable SQL query functions + Wikipedia integration
+├── dashboard.py # Streamlit dashboard application
+├── analysis.sql # Documented standalone SQL analysis queries
+├── test_basic.py # Automated tests (pytest)
+├── docker-compose.yml # One-command PostgreSQL setup
+├── clean_fossil_records.csv # Cleaned dataset (generated by gbif_API.py)
 ├── requirements.txt
+├── .env.example
 ├── .gitignore
-├── README.md
-└── docker-compose.yml
+└── README.md
 
 
-## 🚀 Learning Goals
+---
 
-Through PaleoVault, I aim to develop practical experience with:
+## 🔍 Example Questions This Data Can Answer
 
-ETL pipelines
-Data ingestion
-Data cleaning
-Data validation
-Relational databases
-PostgreSQL
-SQL
-Data modelling
-Data storage
-Data quality
-Pipeline architecture
+- How has fossil discovery/recording activity changed over the decades?
+- Which institutions hold the most South African fossil specimens?
+- What proportion of records have geographically valid coordinates?
+- Which species/taxa are most frequently represented?
 
-The project will provide a foundation for exploring more advanced data engineering concepts such as batch processing, streaming, orchestration, and cloud storage.
+---
 
-## 📈 Development Roadmap
-### Version 1 — Basic ETL
-CSV → Pandas → PostgreSQL
+## 🌱 Future Improvements
 
-### Version 2 — Multiple Data Formats
-CSV + JSON → ETL → PostgreSQL
+- [ ] Marker clustering on the main map for better performance at scale
+- [ ] CI/CD pipeline (GitHub Actions) to run tests automatically on push
+- [ ] UI testing for the Streamlit dashboard
+- [ ] Cloud deployment (Streamlit Community Cloud + hosted PostgreSQL)
+- [ ] Multi-table relational schema (species, sites, institutions) for richer SQL analysis
+- [ ] GBIF Species API as a supplementary source for species descriptions
 
-### Version 3 — Data Lake + Warehouse
-Raw Data → Data Lake → Transformation → Data Warehouse
+---
 
-### Version 4 — Orchestration
-Airflow → Pipeline → Data Warehouse
+## 🎓 Academic Context
 
-### Version 5 — Streaming
-Data Source → Kafka → Processing → Storage
+Built as an independent Data Engineering elective project at **WeThinkCode_**, demonstrating a complete pipeline — from live API extraction through to an interactive, user-facing analytical tool — with real attention to data quality, security, and reproducibility.
 
-### Version 6 — Scalable Processing
-Large Dataset → Spark → Data Warehouse
+---
 
-The project will remain intentionally manageable while each stage introduces a new data engineering concept.
+## 📜 Attribution
 
-## 🎓 Academic Purpose
+- Fossil occurrence data: [GBIF.org](https://www.gbif.org)
+- Species descriptions & images (where shown): [Wikipedia](https://www.wikipedia.org) — CC BY-SA
 
-PaleoVault is an independent project created to strengthen my practical understanding of data engineering and demonstrate how data engineering concepts can be applied to a scientific domain that I am personally interested in.
+---
+
+## 👤 Author
+
+**Paris Nyoni** 
