@@ -1,4 +1,5 @@
 # 🦴 PaleoVault
+WTC-CU8HFR7P
 
 ### An end-to-end data engineering pipeline exploring South African fossil occurrence data
 
@@ -295,5 +296,4 @@ I chose this project to prove I am ready for the Data Engineering elective by ta
 ## 👤 Author
 
 **Paris Amorita  Nyoni** 
-WTC-CU8HFR7P
 
