@@ -80,25 +80,45 @@ This project exists to demonstrate a complete, real-world data engineering workf
 
 ## 🏗️ Architecture
 GBIF Occurrence API
+
 │
+
 ▼
+
 Python Extraction & Cleaning (gbif_API.py)
+
 │
+
 ▼
+
 clean_fossil_records.csv
+
 │
+
 ▼
+
 PostgreSQL Database (load_to_db.py)
+
 (local install OR Docker)
+
 │
+
 ▼
-SQL Analysis (analysis.sql / queries.py)
+
+SQL Analysis (analysis.sql / queries.py) 
+
 │
+
 ▼
+
 Streamlit Dashboard (dashboard.py)
+
 │
+
 ├── Plotly → charts
+
 ├── Folium → interactive maps
+
 └── Wikipedia API → species descriptions & images
 
 
@@ -126,14 +146,16 @@ Streamlit Dashboard (dashboard.py)
 
 **Dataset size:** 15,070 records · 2,793 unique species/taxa · 42 contributing institutions
 
-### Data Quality — Handled Deliberately, Not Silently
+### 📊 Data Quality Challenges (Handled Deliberately)
 
-| Finding | Decision |
-|---|---|
-| 1,089 records missing a scientific name | Preserved as-is — not invented or dropped |
-| 106 records missing a GBIF `occurrenceID` | Handled via a database-generated surrogate key (`id SERIAL`) instead of a fragile natural key |
-| 413 records with coordinates outside South Africa's bounding box | Flagged (`coordinatesInvalid`) but retained for non-spatial analysis |
-| Duplicate `occurrenceID`s | **Zero found** among records that have one — verified via list/set comparison |
+Scientific data is notoriously imperfect. Here is how I proactively handled structural anomalies rather than letting the pipeline crash:
+
+| The Issue | My Engineering Choice | Why I Did It |
+| :--- | :--- | :--- |
+| **1,089 records** missing a scientific name | Preserved as `Unknown Taxon` | Dropping them would break historical completeness; inventing names violates data integrity. |
+| **106 records** missing a GBIF `occurrenceID` | Auto-generated surrogate keys (`id SERIAL`) | Ensures every row remains uniquely identifiable in PostgreSQL even without a natural key. |
+| **413 records** with coordinates outside SA | Flagged via `coordinatesInvalid` attribute | Retained them for chronological data analysis but excluded them from the geographic map layer. |
+
 
 > ⚠️ **On data completeness:** This dataset reflects only what institutions have contributed to GBIF. It doesn't include every significant South African fossil find — for example, *Homo naledi* specimens (researched via Wits University's Rising Star excavations) don't currently appear in GBIF's occurrence records. This is a genuine limitation of the data source, not a pipeline defect — and it's exactly the kind of nuance real data engineering work has to reckon with.
 
@@ -255,9 +277,11 @@ Paleo-Vault/
 
 ---
 
-## 🎓 Academic Context
+### 🧬 Why I Built This (Elective Motivation)
 
-Built as an independent Data Engineering elective project at **WeThinkCode_**, demonstrating a complete pipeline — from live API extraction through to an interactive, user-facing analytical tool — with real attention to data quality, security, and reproducibility.
+I chose this project to prove I am ready for the Data Engineering elective by tackling two major hurdles:
+1. **Real-world Passion:** I wanted to bridge data engineering with South Africa's rich paleoanthropological history, using real public infrastructure data instead of generic textbook datasets.
+2. **Embracing the Mess:** Anyone can build a pipeline with perfect data. I deliberately targeted a live, public scientific dataset known for missing values, broken coordinates, and inconsistent naming to prove I can design robust error handling and defensive coding strategies.
 
 ---
 
@@ -270,4 +294,6 @@ Built as an independent Data Engineering elective project at **WeThinkCode_**, d
 
 ## 👤 Author
 
-**Paris Nyoni** 
+**Paris Amorita  Nyoni** 
+
+WTC-CU8HFR7P
