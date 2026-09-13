@@ -39,7 +39,7 @@ This project exists to demonstrate a complete, real-world data engineering workf
 - Reuse or extend the pipeline for a different country, taxon, or data source entirely — the extraction and cleaning logic is written to be adaptable, not hardcoded to this one use case
 
 ---
-##Preview of what the streamlit project looks like:
+## Preview of what the streamlit project looks like:
 
 ![alt text](<Screenshot 2026-09-12 122335.png>)
 ![alt text](<Screenshot 2026-09-12 122404.png>)
@@ -170,7 +170,7 @@ No manual PostgreSQL install, no manual `CREATE DATABASE` — Docker Compose han
 **Prerequisites:** Python 3.12+, PostgreSQL 16+, Git
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Paristarbel/Paleo-Vault.git
 cd Paleo-Vault
 
 python3 -m venv venv
