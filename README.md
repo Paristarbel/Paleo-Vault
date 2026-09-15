@@ -71,11 +71,11 @@ This project exists to demonstrate a complete, real-world data engineering workf
 
 ## 🖥️ Dashboard Features
 
-- 📊 **Summary Stats** — total records, unique species, contributing institutions
-- 📈 **Records by Year** — fossil record activity across 74+ years
-- 🏛️ **Records by Institution** — which museums/universities hold the most South African fossil data
-- 🗺️ **Fossil Locations Map** — interactive map of every geographically valid record
-- 🔍 **Species Explorer** — search any species and view a Wikipedia-style profile: live description and image (pulled from Wikipedia's API), GBIF specimen media (when available), occurrence records, and a dedicated location map
+- 📊 **Summary Stats** => total records, unique species, contributing institutions
+- 📈 **Records by Year** => fossil record activity across 74+ years
+- 🏛️ **Records by Institution** => which museums/universities hold the most South African fossil data
+- 🗺️ **Fossil Locations Map** => interactive map of every geographically valid record
+- 🔍 **Species Explorer** => search any species and view a Wikipedia-style profile: live description and image (pulled from Wikipedia's API), GBIF specimen media (when available), occurrence records, and a dedicated location map
 
 ---
 
