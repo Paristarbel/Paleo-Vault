@@ -11,7 +11,6 @@ WTC-CU8HFR7P
 
 PaleoVault extracts real fossil specimen data from the Global Biodiversity Information Facility (GBIF), cleans and validates it rigorously, loads it into a PostgreSQL database, and presents it through an interactive dashboard — complete with charts, an interactive map, and a Wikipedia-enriched species explorer.
 
-Built as an independent Data Engineering elective project at **WeThinkCode_**, combining a genuine interest in data engineering with paleoanthropology.
 
 ---
 
