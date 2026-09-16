@@ -22,12 +22,12 @@ It takes raw, messy, real-world scientific data — fossil specimen records scat
 
 ### Purpose
 
-This project exists to demonstrate a complete, real-world data engineering workflow — not a toy example, but an actual pipeline handling actual imperfect data: missing values, invalid coordinates, inconsistent formatting, and the reality that no single data source tells the whole story. Every cleaning and validation decision made along the way is deliberate and documented, not just "made to work."
+This project exists to demonstrate a complete, real-world data engineering workflow  not a toy example, but an actual pipeline handling actual imperfect data: missing values, invalid coordinates, inconsistent formatting, and the reality that no single data source tells the whole story. Every cleaning and validation decision made along the way is deliberate and documented, not just "made to work."
 
 ### Who Can Use This?
 
-- **Paleoanthropologists and researchers** — quickly see which South African institutions hold specimens of a given species, cross-reference discovery years, and identify gaps in geographic or temporal coverage without manually searching GBIF's raw interface
-- **Museum and collection curators** — get a consolidated view of how their institution's holdings compare to others, and spot data quality issues (missing coordinates, unnamed specimens) worth correcting at the source
+- **Paleoanthropologists and researchers**, quickly see which South African institutions hold specimens of a given species, cross-reference discovery years, and identify gaps in geographic or temporal coverage without manually searching GBIF's raw interface
+- **Museum and collection curators** ,get a consolidated view of how their institution's holdings compare to others, and spot data quality issues (missing coordinates, unnamed specimens) worth correcting at the source
 - **Students and educators in paleontology or biodiversity science** — explore real specimen data interactively, without needing to write code or query a database directly
 - **Data engineers and developers** — reference implementation for building a full pipeline (API → cleaning → PostgreSQL → analysis → dashboard) around a real, messy, public scientific dataset
 
